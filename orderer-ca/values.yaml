@@ -28,6 +28,10 @@ environment:
   - name: FABRIC_CA_SERVER_CSR_HOSTS
     value: admin-ca-svc, admin-ca-svc.hyperledger.svc.cluster.local, localhost
 
+pvc:
+  name: common-pvc
+  storage: 5Gi
+
 volumes:
   - name: admin-ca-storage
     persistentVolumeClaim:
