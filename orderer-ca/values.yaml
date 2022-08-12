@@ -32,15 +32,9 @@ pvc:
   name: common-pvc
   storage: 5Gi
 
-volumes:
-  - name: admin-ca-storage
-    persistentVolumeClaim:
-    claimName: common-pvc
-  
-volumeMounts:
-  - mountPath: /etc/hyperledger/fabric-ca-server
-    name: admin-ca-storage
-    subPath: organizations/fabric-ca/adminOrg
+volume:
+  name: admin-ca-storage
+  claimName: common-pvc
 
 service:
   type: ClusterIP

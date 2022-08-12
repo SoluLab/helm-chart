@@ -23,11 +23,15 @@ spec:
         env: 
         {{- toYaml .Values.environment | nindent 8}}
         volumeMounts:
-        {{- toYaml .Values.environment | nindent 8}}
+          - mountPath: /etc/hyperledger/fabric-ca-server
+            name: {{.Values.volume.name}}
+            subPath: organizations/fabric-ca/adminOrg
         resources:
           {{- toYaml .Values.resources | nindent 10}}
         ports:
         - containerPort: {{.Values.service.port}}
       volumes:
-        {{- toYaml .Values.volumes | nindent 8}}
+        - name: {{.Values.volume.name}}
+          persistentVolumeClaim:
+            claimName: {{.Values.volume.claimName}}
 

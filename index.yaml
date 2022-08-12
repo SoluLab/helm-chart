@@ -3,10 +3,21 @@ entries:
   orderer-ca:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-12T15:55:03.557657+05:30"
+    created: "2022-08-12T16:22:39.542917+05:30"
     description: A Helm chart for Hyperledger Fabric Certificate Authority based on
       version 1.4.9
-    digest: 25086ff38a6739fa0fe3199598d7db21da2b4d4067e4963a25bd84d99ef435e4
+    digest: 8b2f68c487d7666f7ecfce9de6dea798da673c5249344c3920d945634f1e48c7
+    name: orderer-ca
+    type: application
+    urls:
+    - https://solulab.github.io/helm-chart/orderer-ca-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-08-12T16:22:39.542306+05:30"
+    description: A Helm chart for Hyperledger Fabric Certificate Authority based on
+      version 1.4.9
+    digest: 0a0cb728fbae5d1f9775d84703655da20bd16bc7070cea95e2df37065114578e
     name: orderer-ca
     type: application
     urls:
@@ -15,7 +26,7 @@ entries:
   test:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-12T15:55:03.558184+05:30"
+    created: "2022-08-12T16:22:39.543538+05:30"
     description: A Helm chart for Kubernetes
     digest: b31bdbe7a8c4c43b04c5d2715abba1d3d63c2a10212745129e0cfab7bf074249
     name: test
@@ -26,7 +37,7 @@ entries:
   test1:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-12T15:55:03.558719+05:30"
+    created: "2022-08-12T16:22:39.5441+05:30"
     description: A Helm chart for Kubernetes
     digest: 65fd7fd1b37013e867749d6683a40d065f380d5408145aad69b3e685c43df33f
     name: test1
@@ -34,4 +45,4 @@ entries:
     urls:
     - https://solulab.github.io/helm-chart/test1-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-12T15:55:03.556685+05:30"
+generated: "2022-08-12T16:22:39.541022+05:30"
