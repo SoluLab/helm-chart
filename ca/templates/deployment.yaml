@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.name }}
+    type: {{ .Values.type }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+      type: {{ .Values.type }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+        type: {{ .Values.type }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}
+        image: {{ .Values.image.repository }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/sh"]
+        args: ["-c", "fabric-ca-server start -b {{ .Values.container.args.username }}:{{ .Values.container.args.password }}"]
+        env: 
+        - name: FABRIC_CA_HOME
+          value: /etc/hyperledger/fabric-ca-server
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: {{ .Values.name }}
+        - name: FABRIC_CA_SERVER_DB_TYPE
+          value: postgres
+        - name: FABRIC_CA_SERVER_DB_DATASOURCE 
+          value: host=ca-postgres-svc port=5432 user=loxnetwork password=Loxnetwork@123 dbname=orderer_ca sslmode=disable
+        - name: FABRIC_CA_SERVER_CSR_HOSTS
+          value: {{ .Values.name }}-svc, {{ .Values.name }}-svc.hyperledger.svc.cluster.local, localhost
+        volumeMounts:
+        - mountPath: /etc/hyperledger/fabric-ca-server
+          name: {{ .Values.name }}-storage
+          subPath: organizations/fabric-ca/ordererOrg
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: {{ .Values.service.port }}
+      volumes:
+      - name: {{ .Values.name }}-storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.claimName}}
