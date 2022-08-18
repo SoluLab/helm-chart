@@ -3,34 +3,44 @@ entries:
   ca:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-18T14:40:45.179318+05:30"
+    created: "2022-08-18T14:52:55.363844+05:30"
+    description: A Helm chart of Hyerpedger Fabric CA for Kubernetes
+    digest: dfa1c23331781989d3815518a5705d5953507ed2537c24df31fd7b0b3c539cbc
+    name: ca
+    type: application
+    urls:
+    - https://solulab.github.io/helm-chart/ca-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-08-18T14:52:55.364099+05:30"
     description: A Helm chart of Hyerpedger Fabric CA for Kubernetes
     digest: a37f4ac470680c7ebf2435f354288a5600d267a65e2505000a01859753538a48
     name: ca
     type: application
     urls:
-    - https://solulab.github.io/helm-chart/packages/packages/ca-0.1.0.tgz
+    - https://solulab.github.io/helm-chart/packages/ca-0.1.0.tgz
     version: 0.1.0
   orderer:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-18T14:40:45.179552+05:30"
+    created: "2022-08-18T14:52:55.364329+05:30"
     description: A Helm chart of Hyerpedger Fabric orderer for Kubernetes
     digest: 637312d39b521b45324f5e4707bfe91600b0488132762696573168cbe41c765f
     name: orderer
     type: application
     urls:
-    - https://solulab.github.io/helm-chart/packages/packages/orderer-0.1.0.tgz
+    - https://solulab.github.io/helm-chart/packages/orderer-0.1.0.tgz
     version: 0.1.0
   peer:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-18T14:40:45.179819+05:30"
+    created: "2022-08-18T14:52:55.364598+05:30"
     description: A helm Chart of Hyerpedger Fabric peer for Kubernetes
     digest: f002a251995f894603b9b7911be9a6eb9a9e9175df5f597c80bdae7835348715
     name: peer
     type: application
     urls:
-    - https://solulab.github.io/helm-chart/packages/packages/peer-0.1.0.tgz
+    - https://solulab.github.io/helm-chart/packages/peer-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-18T14:40:45.1789+05:30"
+generated: "2022-08-18T14:52:55.363372+05:30"
