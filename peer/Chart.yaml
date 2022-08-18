@@ -1,6 +1,6 @@
 apiVersion: v2
-name: ca
-description: A Helm chart of Hyerpedger Fabric CA for Kubernetes
+name: peer
+description: A helm Chart of Hyerpedger Fabric peer for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #

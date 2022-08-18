@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.peer }}-{{ .Values.org }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    peer: {{ .Values.peer }}
+    org: {{ .Values.org }}
+spec:
+  selector:
+    matchLabels:
+      peer: {{ .Values.peer }}
+      org: {{ .Values.org }}
+  serviceName: {{ .Values.peer }}-{{ .Values.org }}-svc
+  template:
+    metadata:
+      labels:
+        peer: {{ .Values.peer }}
+        org: {{ .Values.org }}
+    spec:
+      containers:
+      - image: {{ .Values.image.couchdb.repository }}:{{ .Values.image.couchdb.tag }}
+        name: {{ .Values.peer }}-{{ .Values.org }}-couchdb
+        ports:
+        - containerPort: 5984
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+        envFrom:
+        - secretRef:
+            name: couchdb-secret
+        securityContext: 
+          runAs{{ .Values.org }}: 5984
+        volumeMounts:
+        - mountPath: /opt/couchdb/data
+          name: couchdb-storage
+      - name: {{ .Values.peer }}-{{ .Values.org }}
+        image: {{ .Values.image.peer.repository }}:{{ .Values.image.peer.tag }}
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        env:
+        - name: FABRIC_LOGGING_SPEC
+          value: INFO
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_PROFILE_ENABLED
+          value: "true"
+        - name: CORE_PEER_TLS_CERT_FILE
+          value: /etc/hyperledger/fabric/tls/server.crt
+        - name: CORE_PEER_TLS_KEY_FILE
+          value: /etc/hyperledger/fabric/tls/server.key
+        - name: CORE_PEER_TLS_ROOTCERT_FILE
+          value: /etc/hyperledger/fabric/tls/ca.crt
+        - name: CORE_PEER_ID
+          value: {{ .Values.peer }}-{{ .Values.org }}-svc.hyperledger.svc.cluster.local
+        - name: CORE_PEER_ADDRESS
+          value: {{ .Values.peer }}-{{ .Values.org }}-svc.hyperledger.svc.cluster.local:7051
+        - name: CORE_PEER_LISTENADDRESS
+          value: 0.0.0.0:7051
+        - name: CORE_PEER_CHAINCODELISTENADDRESS
+          value: 127.0.0.1:7052
+        - name: CORE_PEER_CHAINCODEADDRESS
+          value: 127.0.0.1:7052
+        - name: CORE_PEER_GOSSIP_BOOTSTRAP
+          value: {{ .Values.peer }}-{{ .Values.org }}-svc.hyperledger.svc.cluster.local:7051
+        - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT
+          value: {{ .Values.peer }}-{{ .Values.org }}-svc.hyperledger.svc.cluster.local:7051
+        - name: CORE_PEER_LOCALMSPID
+          value: {{ .Values.org }}OrgMSP
+        - name: CORE_LEDGER_STATE_STATEDATABASE
+          value: CouchDB
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS
+          value: localhost:5984
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_{{ .Values.org }}NAME
+          valueFrom:
+            secretKeyRef:
+              key: COUCHDB_{{ .Values.org }}
+              name: couchdb-secret
+        - name: CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: COUCHDB_PASSWORD
+              name: couchdb-secret
+        - name: CORE_OPERATIONS_LISTENADDRESS
+          value: 0.0.0.0:9443
+        - name: CORE_METRICS_PROVIDER
+          value: prometheus
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9443
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          failureThreshold: 5
+        ports:
+        - containerPort: 7051
+        volumeMounts:
+        - mountPath: /var/hyperledger/production
+          name: {{ .Values.peer }}-{{ .Values.org }}-storage
+        - mountPath: /etc/hyperledger/fabric
+          name: peer-config
+          subPath: organizations/peerOrganizations/{{ .Values.org }}/peers/{{ .Values.peer }}-{{ .Values.org }}
+      securityContext:
+        fsGroup: 5984
+      volumes:
+      - name: couchdb-storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.peer }}-{{ .Values.org }}-couchdb-pvc
+      - name: {{ .Values.peer }}-{{ .Values.org }}-storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.peer }}-{{ .Values.org }}-pvc
+      - name: peer-config
+        persistentVolumeClaim:
+          claimName: common-pvc

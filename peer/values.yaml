@@ -1,0 +1,23 @@
+namespace: hyperledger
+replicaCount: 1
+peer: peer1
+org: admin
+
+image:
+  couchdb:
+    repository: couchdb
+    tag: "3.1"
+  peer:
+    repository: hyperledger/fabric-peer
+    tag: "2.2.1"
+  pullPolicy: IfNotPresent
+
+secret:
+  couchdb:
+    username: RG9jdHJhY2VAMTIz
+    password: ZG9jdHJhY2U=
+
+service:
+  port: 7051
+  protocol: TCP
+

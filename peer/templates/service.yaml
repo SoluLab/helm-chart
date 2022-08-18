@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.peer }}-{{ .Values.org }}-svc
+  namespace: {{ .Values.namespace }}
+  labels: 
+    peer: {{ .Values.peer }}
+    org: {{ .Values.org }}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    peer: {{ .Values.peer }}
+    org: {{ .Values.org }}  
+  ports:
+  - port: {{ .Values.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.service.port }}

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  serviceName: {{ .Values.name }}-svc
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        env:
+        - name: FABRIC_LOGGING_SPEC
+          value: INFO
+        - name: ORDERER_GENERAL_LISTENADDRESS
+          value: 0.0.0.0
+        - name: ORDERER_GENERAL_LISTPORT
+          value: "7050"
+        - name: ORDERER_GENERAL_GENESISMETHOD
+          value: file
+        - name: ORDERER_GENERAL_GENESISFILE
+          value: /var/hyperledger/orderer/genesis.block
+        - name: ORDERER_GENERAL_LOCALMSPID
+          value: OrdererMSP
+        - name: ORDERER_GENERAL_LOCALMSPDIR
+          value: /var/hyperledger/orderer/msp
+        - name: ORDERER_GENERAL_TLS_ENABLED
+          value: "true"
+        - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+          value: /var/hyperledger/orderer/tls/server.key
+        - name: ORDERER_GENERAL_TLS_CERTIFICATE
+          value: /var/hyperledger/orderer/tls/server.crt
+        - name: ORDERER_GENERAL_TLS_ROOTCAS
+          value: "[/var/hyperledger/orderer/tls/ca.crt]"
+        - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+          value: /var/hyperledger/orderer/tls/server.crt
+        - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+          value: /var/hyperledger/orderer/tls/server.key
+        - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+          value: "[/var/hyperledger/orderer/tls/ca.crt]"
+        - name: ORDERER_OPERATIONS_LISTENADDRESS
+          value: 0.0.0.0:9443
+        - name: ORDERER_METRICS_PROVIDER
+          value: prometheus
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9443
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          failureThreshold: 5
+        ports:
+        - containerPort: {{ .Values.service.port }}
+        volumeMounts:
+        - mountPath: /var/hyperledger/production
+          name: orderer-storage
+        - mountPath: /var/hyperledger/orderer/
+          name: orderer-genesis
+          subPath: organizations/ordererOrganizations/ordererOrg/orderers/{{ .Values.name }}
+      volumes:
+      - name: orderer-storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.name }}-pvc
+      - name: orderer-genesis
+        persistentVolumeClaim:
+          claimName: common-pvc

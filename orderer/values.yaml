@@ -1,0 +1,13 @@
+namespace: hyperledger
+replicaCount: 1
+name: orderer1
+
+image:
+  repository: hyperledger/fabric-orderer
+  tag: "2.2.1"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 7050
+  protocol: TCP
+

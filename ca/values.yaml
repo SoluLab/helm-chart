@@ -10,7 +10,6 @@ type: blockchain
 image:
   repository: hyperledger/fabric-ca
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   tag: "1.4.9"
 
 container:
@@ -18,30 +17,6 @@ container:
   args: 
     username: admin
     password: Loxnetwork@123
-
-claimName: common-pvc
-
-environment: 
-  - name: FABRIC_CA_HOME
-    value: /etc/hyperledger/fabric-ca-server
-  - name: FABRIC_CA_SERVER_TLS_ENABLED
-    value: "true"
-  - name: FABRIC_CA_SERVER_CA_NAME
-    value: admin-ca
-  - name: FABRIC_CA_SERVER_DB_TYPE
-    value: postgres
-  - name: FABRIC_CA_SERVER_DB_DATASOURCE 
-    value: host=ca-postgres-svc port=5432 user=loxnetwork password=Loxnetwork@123 dbname=admin_ca sslmode=disable
-  - name: FABRIC_CA_SERVER_CSR_HOSTS
-    value: admin-ca-svc, admin-ca-svc.hyperledger.svc.cluster.local, localhost
-
-pvc:
-  name: common-pvc
-  storage: 5Gi
-
-volume:
-  name: admin-ca-storage
-  claimName: common-pvc
 
 service:
   type: ClusterIP

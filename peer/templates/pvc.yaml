@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.peer }}-{{ .Values.org }}-couchdb-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.peer }}-{{ .Values.org }}-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: common-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: efs-sc

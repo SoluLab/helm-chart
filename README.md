@@ -15,7 +15,7 @@ Once Helm is set up properly, add the repo as follows:
 helm repo add grafana https://solulab.github.io/helm-chart
 ```
 
-You can then run `helm search repo solulab` to see the charts.
+You can then run `helm search repo orderer` to see the charts.
 
 <!-- Keep full URL links to repo files because this README syncs from main to gh-pages.  -->
 Chart documentation is available in
