@@ -49,4 +49,4 @@ spec:
       volumes:
       - name: {{ .Values.name }}-storage
         persistentVolumeClaim:
-          claimName: {{ .Values.claimName}}
+          claimName: common-pvc
