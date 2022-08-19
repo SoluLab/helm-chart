@@ -6,6 +6,12 @@ replicaCount: 1
 
 name: orderer-ca
 type: blockchain
+orgType: orderer
+
+db:
+  type: postgres
+  username: loxnetwork
+  password: Loxnetwork@123
 
 image:
   repository: hyperledger/fabric-ca

@@ -15,3 +15,21 @@ spec:
   - port: {{ .Values.service.port }}
     protocol: TCP
     targetPort: {{ .Values.name }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ca-{{ .Values.db.type }}-svc
+  namespace: {{ .Values.namespace }}
+  labels: 
+    app: ca-{{ .Values.db.type }}
+spec:
+  type: ClusterIP
+  selector:
+    app: ca-{{ .Values.db.type }}
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432

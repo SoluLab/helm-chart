@@ -31,15 +31,15 @@ spec:
         - name: FABRIC_CA_SERVER_CA_NAME
           value: {{ .Values.name }}
         - name: FABRIC_CA_SERVER_DB_TYPE
-          value: postgres
+          value: {{ .Values.db.type}}
         - name: FABRIC_CA_SERVER_DB_DATASOURCE 
-          value: host=ca-postgres-svc port=5432 user=loxnetwork password=Loxnetwork@123 dbname=orderer_ca sslmode=disable
+          value: host=ca-{{ .Values.db.type}}-svc port=5432 user={{ .Values.db.username}} password={{ .Values.db.password }} dbname={{ .Values.orgType }}_ca sslmode=disable
         - name: FABRIC_CA_SERVER_CSR_HOSTS
           value: {{ .Values.name }}-svc, {{ .Values.name }}-svc.hyperledger.svc.cluster.local, localhost
         volumeMounts:
         - mountPath: /etc/hyperledger/fabric-ca-server
           name: {{ .Values.name }}-storage
-          subPath: organizations/fabric-ca/ordererOrg
+          subPath: organizations/fabric-ca/{{ .Values.orgType }}Org
         resources:
           limits:
             memory: "256Mi"
@@ -50,3 +50,45 @@ spec:
       - name: {{ .Values.name }}-storage
         persistentVolumeClaim:
           claimName: common-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ca-{{ .Values.db.type }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: ca-{{ .Values.db.type }}
+spec:
+  selector:
+    matchLabels:
+      app: ca-{{ .Values.db.type }}
+  template:
+    metadata:
+      labels:
+        app: ca-{{ .Values.db.type }}
+    spec:
+      containers:
+      - name: ca-{{ .Values.db.type }}
+        image: postgres:12.3-alpine
+        env: 
+        - name: POSTGRES_DB
+          value: {{ .Values.orgType }}_ca
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        envFrom:
+          - secretRef:
+              name: ca-{{ .Values.db.type }}-creds
+        volumeMounts:
+        - mountPath: /var/lib/{{ .Values.db.type }}ql/data
+          name: ca-{{ .Values.db.type }}-storage
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+          name: {{ .Values.db.type }}
+      restartPolicy: Always
+      volumes:
+      - name: ca-{{ .Values.db.type }}-storage
+        persistentVolumeClaim:
+          claimName: ca-{{ .Values.db.type }}-pvc

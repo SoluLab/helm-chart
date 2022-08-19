@@ -10,3 +10,18 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: efs-sc
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ca-{{ .Values.db.type }}-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: gp2
+  resources:
+    requests:
+      storage: 5Gi
