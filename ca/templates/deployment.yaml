@@ -30,10 +30,10 @@ spec:
           value: "true"
         - name: FABRIC_CA_SERVER_CA_NAME
           value: {{ .Values.name }}
-        - name: FABRIC_CA_SERVER_DB_TYPE
-          value: {{ .Values.db.type}}
-        - name: FABRIC_CA_SERVER_DB_DATASOURCE 
-          value: host=ca-{{ .Values.db.type}}-svc port=5432 user={{ .Values.db.username}} password={{ .Values.db.password }} dbname={{ .Values.orgType }}_ca sslmode=disable
+        # - name: FABRIC_CA_SERVER_DB_TYPE
+        #   value: {{ .Values.db.type}}
+        # - name: FABRIC_CA_SERVER_DB_DATASOURCE 
+        #   value: host=ca-{{ .Values.db.type}}-svc port=5432 user={{ .Values.db.username}} password={{ .Values.db.password }} dbname={{ .Values.orgType }}_ca sslmode=disable
         - name: FABRIC_CA_SERVER_CSR_HOSTS
           value: {{ .Values.name }}-svc, {{ .Values.name }}-svc.hyperledger.svc.cluster.local, localhost
         volumeMounts:
