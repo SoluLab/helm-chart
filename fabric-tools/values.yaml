@@ -1,0 +1,9 @@
+namespace: hyperledger
+replicaCount: 1
+name: fabric-tools
+org: admin
+
+image:
+  repository: hyperledger/fabric-tools
+  tag: "2.2.1"
+  pullPolicy: IfNotPresent

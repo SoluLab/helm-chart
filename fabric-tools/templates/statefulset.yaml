@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.name }}-{{ .Values.org }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: {{ .Values.name }}-{{ .Values.org }}
+    org: {{ .Values.org }}
+spec:
+  selector:
+    matchLabels:
+      peer: {{ .Values.name }}-{{ .Values.org }}
+      org: {{ .Values.org }}
+  template:
+    metadata:
+      labels:
+        peer: {{ .Values.name }}-{{ .Values.org }}
+        org: {{ .Values.org }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}-{{ .Values.org }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        workingDir: /go/scripts
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        env:
+        - name: FABRIC_LOGGING_SPEC
+          value: INFO
+        - name: CORE_PEER_TLS_ENABLED
+          value: "true"
+        - name: CORE_PEER_PROFILE_ENABLED
+          value: "true"
+        - name: CORE_METRICS_PROVIDER
+          value: prometheus
+        volumeMounts:
+        - mountPath: /go/scripts
+          name: common-storage
+      volumes:
+      - name: common-storage
+        persistentVolumeClaim:
+          claimName: common-pvc

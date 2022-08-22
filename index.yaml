@@ -3,7 +3,7 @@ entries:
   ca:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-19T23:10:21.146135+05:30"
+    created: "2022-08-22T17:05:36.416914+05:30"
     description: A Helm chart of Hyerpedger Fabric CA for Kubernetes
     digest: bd2485aad08db01089fb26d7c7c0bc91ced5a61c92db483bc8f050f4382f6e5a
     name: ca
@@ -11,10 +11,21 @@ entries:
     urls:
     - https://solulab.github.io/helm-chart/packages/ca-0.1.0.tgz
     version: 0.1.0
+  fabric-tools:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-08-22T17:05:36.417158+05:30"
+    description: A helm Chart of Hyerpedger Fabric peer for Kubernetes
+    digest: 378b5e8f4124a0f8e5dbc7e7ad52ed696e7d852824305cce4a2b023807078524
+    name: fabric-tools
+    type: application
+    urls:
+    - https://solulab.github.io/helm-chart/packages/fabric-tools-0.1.0.tgz
+    version: 0.1.0
   orderer:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-19T23:10:21.146435+05:30"
+    created: "2022-08-22T17:05:36.417595+05:30"
     description: A Helm chart of Hyerpedger Fabric orderer for Kubernetes
     digest: 637312d39b521b45324f5e4707bfe91600b0488132762696573168cbe41c765f
     name: orderer
@@ -25,7 +36,7 @@ entries:
   peer:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-08-19T23:10:21.146725+05:30"
+    created: "2022-08-22T17:05:36.418022+05:30"
     description: A helm Chart of Hyerpedger Fabric peer for Kubernetes
     digest: f002a251995f894603b9b7911be9a6eb9a9e9175df5f597c80bdae7835348715
     name: peer
@@ -33,4 +44,4 @@ entries:
     urls:
     - https://solulab.github.io/helm-chart/packages/peer-0.1.0.tgz
     version: 0.1.0
-generated: "2022-08-19T23:10:21.144727+05:30"
+generated: "2022-08-22T17:05:36.415915+05:30"
