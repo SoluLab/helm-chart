@@ -7,3 +7,6 @@ image:
   repository: hyperledger/fabric-tools
   tag: "2.2.1"
   pullPolicy: IfNotPresent
+
+pvc:
+  name: common-pvc

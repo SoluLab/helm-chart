@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Pod
+kind: StatefulSet
 metadata:
   name: {{ .Values.name }}-{{ .Values.org }}
   namespace: {{ .Values.namespace }}
@@ -7,6 +7,7 @@ metadata:
     name: {{ .Values.name }}-{{ .Values.org }}
     org: {{ .Values.org }}
 spec:
+  serviceName: {{ .Values.name }}-{{ .Values.org }}
   selector:
     matchLabels:
       peer: {{ .Values.name }}-{{ .Values.org }}
@@ -20,12 +21,18 @@ spec:
       containers:
       - name: {{ .Values.name }}-{{ .Values.org }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-        workingDir: /go/scripts
+        tty: true
+        stdin: true
+        command: ["sh", "-c", "/bin/bash"] 
         resources:
           limits:
             memory: "512Mi"
             cpu: "200m"
         env:
+        - name: GOPATH
+          value: /opt/gopath
+        - name: GODEBUG
+          value: "netdns=go"
         - name: FABRIC_LOGGING_SPEC
           value: INFO
         - name: CORE_PEER_TLS_ENABLED

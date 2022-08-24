@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: common-pvc
-  namespace: {{.Values.namespace}}
+  name: {{ .Values.pvc }}
+  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
   - ReadWriteMany

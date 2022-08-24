@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: {{ .Values.name }}-{{ .Values.org }}-configmap
+  labels:
+      app: {{ .Values.name }}-{{ .Values.org }}-configmap
+data:
+  registerEnroll.sh: |
+    {{- include "setup" . | indent 4 }}
+        
